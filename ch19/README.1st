@@ -1,0 +1,90 @@
+/**
+ * Roger C. Martin, The Liskov Substitution Principle
+ */
+The Liskov Substitution Principle
+FUNCTIONS THAT USE POINTERS OR REFERENCES TO BASE
+CLASSES MUST BE ABLE TO USE OBJECTS OF DERIVED CLASSES
+WITHOUT KNOWING IT.
+
+What is wanted here is something like the following substitution property: If
+for each object o1 of type S there is an object o2 of type T such that for all
+programs P defined in terms of T, the behavior of P is unchanged when o1 is
+substituted for o2 then S is a subtype of T.
+
+
+The LSP makes clear that in OOD the ISA relationship pertains to behavior. Not
+intrinsic private behavior, but extrinsic public behavior; behavior that clients depend upon.
+
+Bertrand Meyer Design By Contract
+...when redefining a routine [in a derivative], you may only replace its
+precondition by a weaker one, and its postcondition by a stronger one.
+Subclasses in an inheritance hierarchy are allowed to weaken preconditions (but not strengthen them),
+and strengthen postconditions and invariants (but not weaken them).
+
+
+
+To classify the positions, the compiler starts from the declaration of a
+type parameter and then moves inward through deeper nesting levels. 
+Positions at the top level of the declaring class are classified as positive. 
+By default, positions at deeper nesting levels are classified the same as that at enclosing levels, 
+but there are a handful of exceptions where the classification changes. 
+Method value parameter positions are classified to the flipped classification relative to positions outside the method, 
+where the flip of a positive classification is negative, the flip of a negative classification is positive,
+and the flip of a neutral classification is still neutral.
+
+Besides method value parameter positions, the current classification is also flipped at the type parameters of methods. 
+A classification is sometimes flipped at the type argument position of a type, such as the Arg in C[Arg],
+depending on the variance of the corresponding type parameter. 
+If C’s type parameter is annotated with a + then the classification stays the same. 
+If C’s type parameter is annotated with a -, then the current classification is flipped. 
+If C’s type parameter has no variance annotation then the current classification is changed to neutral.
+
+Definition:
+https://en.wikipedia.org/wiki/Subtyping
+Subtyping
+---------
+In programming language theory, subtyping (also subtype polymorphism or inclusion polymorphism) 
+is a form of type polymorphism in which a subtype is a datatype that is related to another datatype 
+(the supertype) by some notion of substitutability, meaning that program elements, typically 
+subroutines or functions, written to operate on elements of the supertype can also operate on elements 
+of the subtype. If S is a subtype of T, the subtyping relation is often written S <: T, 
+to mean that any term of type S can be safely used in a context where a term of type T is expected.
+
+
+http://www.cmi.ac.in/~madhavan/courses/pl2009/lecturenotes/lecture-notes/node28.html
+Subtyping vs inheritance
+-----------------------
+In the object-oriented framework, inheritance is usually presented as a feature that goes 
+hand in hand with subtyping when one organizes abstract datatypes in a hierarchy of classes. 
+However, the two are orthogonal ideas.
+
+A. Subtyping refers to compatibility of interfaces. 
+   A type B is a subtype of A if every function that can be invoked on an object of type A 
+   can also be invoked on an object of type B. 
+B. Inheritance refers to reuse of implementations. 
+   A type B inherits from another type A if some functions for B are written in terms 
+   of functions of A.
+
+In the object-oriented framework, if B is a subclass of A then it is clear that B is a subtype of A. 
+Very often, B also inherits from A
+
+However, subtyping and inheritance need not go hand in hand. 
+
+Consider the data structure deque, a double-ended queue. 
+
+A deque supports insertion and deletion at both ends, so it has four functions insert-front, 
+delete-front, insert-rear and delete-rear. 
+
+If we use just insert-rear and delete-front we get a normal queue. 
+
+On the other hand, if we use just insert-front and delete-front, we get a stack. 
+
+In other words, we can implement queues and stacks in terms of deques, so as datatypes, 
+Stack and Queue inherit from Deque. 
+
+On the other hand, neither Stack not Queue are subtypes of Deque since they do not support 
+all the functions provided by Deque. 
+
+In fact, in this case, Deque is a subtype of both Stack and Queue! 
+
+

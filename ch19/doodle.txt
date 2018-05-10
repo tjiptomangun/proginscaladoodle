@@ -1,0 +1,27 @@
+To classify the positions, the compiler starts from the declaration of a
+type parameter and then moves inward through deeper nesting levels. 
+Positions at the top level of the declaring class are classified as positive. 
+By default, positions at deeper nesting levels are classified the same as that at enclosing levels, 
+but there are a handful of exceptions where the classification changes. 
+Method value parameter positions are classified to the flipped classification relative to positions outside the method, 
+where the flip of a positive classification is negative, the flip of a negative classification is positive,
+and the flip of a neutral classification is still neutral.
+
+Besides method value parameter positions, the current classification is also flipped at the type parameters of methods. 
+A classification is sometimes flipped at the type argument position of a type, such as the Arg in C[Arg],
+depending on the variance of the corresponding type parameter. 
+If C’s type parameter is annotated with a + then the classification stays the same. 
+If C’s type parameter is annotated with a -, then the current classification is flipped. 
+If C’s type parameter has no variance annotation then the current classification is changed to neutral.
+
+
+trait OutputChannel[+T] {
+    def write(x: T)
+}
+
+val j = new strOutputChannel extends OutputChannel[String]
+
+val k = new anyRefOutputChannel extends OutputChannel[AnyRef]
+
+
+see again StrangeIntQueue, why is it wrong?
